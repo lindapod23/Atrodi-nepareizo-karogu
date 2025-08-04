@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8" />
+  <title>Karogu Spēle</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    .flag-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .flag {
+      border: 2px solid #ccc;
+      padding: 10px;
+      background-color: white;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .flag:hover {
+      transform: scale(1.05);
+      border-color: #888;
+    }
+
+    .country-name {
+      margin-top: 10px;
+      font-weight: bold;
+      color: black;
+    }
+
+    .team-buttons {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .team-buttons button {
+      margin: 10px;
+      padding: 15px 25px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      background-color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .red { color: red; }
+    .blue { color: blue; }
+    .green { color: green; }
+    .yellow { color: goldenrod; }
+
+    .clue {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: normal;
+    }
+
+    .message {
+      font-size: 20px;
+      color: darkred;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Atzīmē 4 nepareizos karogus</h1>
+
+  <div class="flag-grid" id="flagGrid">
+    <!-- Replace src with your actual image URLs -->
+    <div class="flag" data-correct="false"><img src="danija.png" width="100"><div class="country-name">Dānija</div></div>
+    <div class="flag" data-correct="true"><img src="zviedrija.png" width="100"><div class="country-name">Zviedrija</div></div>
+    <div class="flag" data-correct="true"><img src="francija.png" width="100"><div class="country-name">Francija</div></div>
+    <div class="flag" data-correct="false"><img src="igaunija.png" width="100"><div class="country-name">Igaunija</div></div>
+    <div class="flag" data-correct="true"><img src="italija.png" width="100"><div class="country-name">Itālija</div></div>
+    <div class="flag" data-correct="true"><img src="vacijas.png" width="100"><div class="country-name">Vācija</div></div>
+    <div class="flag" data-correct="false"><img src="belgija.png" width="100"><div class="country-name">Beļģija</div></div>
+    <div class="flag" data-correct="false"><img src="spanija.png" width="100"><div class="country-name">Spānija</div></div>
+    <div class="flag" data-correct="true"><img src="cehija.png" width="100"><div class="country-name">Čehija</div></div>
+    <div class="flag" data-correct="true"><img src="polija.png" width="100"><div class="country-name">Polija</div></div>
+  </div>
+
+  <div class="message" id="message"></div>
+
+  <div class="team-buttons" id="teamButtons">
+    <button class="red" onclick="showClue('Red')">Red Team</button>
+    <button class="blue" onclick="showClue('Blue')">Blue Team</button>
+    <button class="green" onclick="showClue('Green')">Green Team</button>
+    <button class="yellow" onclick="showClue('Yellow')">Yellow Team</button>
+  </div>
+
+  <div class="clue" id="clueBox"></div>
+
+  <script>
+    const flags = document.querySelectorAll('.flag');
+    const teamButtons = document.getElementById('teamButtons');
+    const messageBox = document.getElementById('message');
+    const clueBox = document.getElementById('clueBox');
+
+    let selectedFlags = [];
+
+    flags.forEach(flag => {
+      flag.addEventListener('click', () => {
+        if (selectedFlags.includes(flag)) {
+          flag.style.borderColor = '#ccc';
+          selectedFlags = selectedFlags.filter(f => f !== flag);
+        } else {
+          flag.style.borderColor = 'orange';
+          selectedFlags.push(flag);
+        }
+
+        if (selectedFlags.length === 4) {
+          checkAnswers();
+        }
+      });
+    });
+
+    function checkAnswers() {
+      const incorrectFlags = selectedFlags.filter(f => f.dataset.correct === "false");
+
+      if (incorrectFlags.length === 4) {
+        messageBox.textContent = "Pareizi! Izvēlies komandu.";
+        teamButtons.style.display = 'block';
+      } else {
+        messageBox.textContent = "Nepareizi! Mēģini vēlreiz.";
+        selectedFlags.forEach(f => f.style.borderColor = '#ccc');
+        selectedFlags = [];
+      }
+    }
+
+    function showClue(team) {
+      const clues = {
+        "Red": "Sarkanie: Meklē pie sarkanās durvīm.",
+        "Blue": "Zilie: Pārbaudi zem galda.",
+        "Green": "Zaļie: Pie puķupoda dārzā.",
+        "Yellow": "Dzeltenie: Aiz gleznas pie sienas."
+      };
+      clueBox.textContent = clues[team];
+    }
+  </script>
+</body>
+</html>
