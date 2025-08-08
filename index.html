@@ -74,6 +74,12 @@
       color: darkred;
       margin-top: 20px;
     }
+
+    @media (max-width: 600px) {
+      .flag-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
   </style>
 </head>
 <body>
@@ -117,8 +123,10 @@
           flag.style.borderColor = '#ccc';
           selectedFlags = selectedFlags.filter(f => f !== flag);
         } else {
-          flag.style.borderColor = 'orange';
-          selectedFlags.push(flag);
+          if (selectedFlags.length < 4) {
+            flag.style.borderColor = 'orange';
+            selectedFlags.push(flag);
+          }
         }
 
         if (selectedFlags.length === 4) {
@@ -142,13 +150,34 @@
 
     function showClue(team) {
       const clues = {
-        "Red": "Sarkanie: Meklē pie sarkanās durvīm.",
-        "Blue": "Zilie: Pārbaudi zem galda.",
-        "Green": "Zaļie: Pie puķupoda dārzā.",
-        "Yellow": "Dzeltenie: Aiz gleznas pie sienas."
+        "Red": `Nu ļoti erudīti ceļotāji, apsveicu! Dodamies tālāk! Vai varat atminēt nākamo valsti?<br>
+        Te zeme ir cieta, bet tas nav betons,<br>
+        Te sprintu skrien uz asmeņiem, ne zolēm,<br>
+        Te nedejo valsi, bet cīnās kā zvēri.<br>
+        Meklē vietu, kur ripa uz mērķi lido ātrāk kā vējš.`,
+
+        "Blue": `Nu ļoti erudīti ceļotāji, apsveicu! Dodamies tālāk! Vai varat atminēt nākamo valsti?<br>
+        Kur ābolmaize smaržo un mīļi tev smaida,<br>
+        Kur tējas tase virtuvē gaida.<br>
+        Ne skolā, ne darbā, ne veikalā lielā,<br>
+        Bet pie omes uz mājām ved tavs ceļš.`,
+
+        "Green": `Nu ļoti erudīti ceļotāji, apsveicu! Dodamies tālāk! Vai varat atminēt nākamo valsti?<br>
+        Kur skanēja balsis un koru skaņas,<br>
+        Tur Cimzes gars vēl joprojām mājo.<br>
+        Ar notīm un dziesmām un skatītāju rindām,<br>
+        Nākamo pavedienu meklē, kur skatuve gaida.`,
+
+        "Yellow": `Nu ļoti erudīti ceļotāji, apsveicu! Dodamies tālāk! Vai varat atminēt nākamo valsti?<br>
+        Kur skanēja balsis un koru skaņas,<br>
+        Tur Cimzes gars vēl joprojām mājo.<br>
+        Ar notīm un dziesmām un skatītāju rindām,<br>
+        Nākamo pavedienu meklē, kur skatuve gaida.`
       };
-      clueBox.textContent = clues[team];
+
+      clueBox.innerHTML = clues[team];
     }
   </script>
 </body>
 </html>
+
